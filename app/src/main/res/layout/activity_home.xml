@@ -46,4 +46,15 @@
         android:layout_margin="20dp"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/usersList"
+        android:layout_below="@+id/adduserbtn"
+        android:text="Users List"
+        android:backgroundTint="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        />
+
 </RelativeLayout>

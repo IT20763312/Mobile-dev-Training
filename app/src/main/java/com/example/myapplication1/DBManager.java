@@ -6,13 +6,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBManager {
 
     private DatabaseHelperClass databaseHelperClass;
 
     private Context context;
 
-    private SQLiteDatabase sqLiteDatabase;
+    public SQLiteDatabase sqLiteDatabase;
 
     public DBManager(UpdateActivity c){
         context = c;
@@ -23,10 +26,19 @@ public class DBManager {
     public DBManager(LoginActivity c){
         context = c;
     }
+    public DBManager(UserlistActivity c){
+        context = c;
+    }
 
     public DBManager open() throws SQLException {
         databaseHelperClass = new DatabaseHelperClass(context);
         sqLiteDatabase = databaseHelperClass.getWritableDatabase();
+        return this;
+    }
+
+    public DBManager openRead() throws SQLException {
+        databaseHelperClass = new DatabaseHelperClass(context);
+        sqLiteDatabase = databaseHelperClass.getReadableDatabase();
         return this;
     }
 
@@ -89,5 +101,22 @@ public class DBManager {
             return true;
         }
         return false;
+    }
+
+    public List<EmployeeModelClass> getUsersList(){
+        String sql = "Select * from " + DatabaseHelperClass.TABLE_NAME;
+        openRead();
+        List<EmployeeModelClass> storeEmployee = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.rawQuery(sql,null);
+        if (cursor.moveToFirst()){
+            do {
+                int id = Integer.parseInt(cursor.getString(0));
+                String username = cursor.getString(1);
+                String password = cursor.getString(2);
+                storeEmployee.add(new EmployeeModelClass(id,username,password));
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return storeEmployee;
     }
 }
