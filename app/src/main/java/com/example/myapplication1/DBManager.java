@@ -14,7 +14,13 @@ public class DBManager {
 
     private SQLiteDatabase sqLiteDatabase;
 
-    public DBManager(Context c){
+    public DBManager(UpdateActivity c){
+        context = c;
+    }
+    public DBManager(RegisterActivity c){
+        context = c;
+    }
+    public DBManager(LoginActivity c){
         context = c;
     }
 
@@ -53,5 +59,35 @@ public class DBManager {
 
     public void delete(long id){
         sqLiteDatabase.delete(DatabaseHelperClass.TABLE_NAME,DatabaseHelperClass.ID+"="+id,null);
+    }
+
+    public boolean checkUser(String username,String password){
+        //array of columns to fetch
+        String[] columns = {DatabaseHelperClass.ID};
+
+        sqLiteDatabase = databaseHelperClass.getReadableDatabase();
+
+        //Selection
+        String selection = DatabaseHelperClass.USERNAME + " = ? " + " AND " + DatabaseHelperClass.PASSWORD + " = ?";
+
+        //Selection Args
+        String[] selectionArgs = {username, password};
+
+        Cursor cursor = sqLiteDatabase.query(DatabaseHelperClass.TABLE_NAME,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        int cursorCount = cursor.getCount();
+
+        cursor.close();
+        sqLiteDatabase.close();
+        if (cursorCount > 0){
+            return true;
+        }
+        return false;
     }
 }
