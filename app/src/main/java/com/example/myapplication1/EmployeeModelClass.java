@@ -1,21 +1,21 @@
 package com.example.myapplication1;
 
 public class EmployeeModelClass {
-    Integer id;
+    int id;
     String username;
     String password;
 
-    public EmployeeModelClass(Integer id, String username, String password) {
+    public EmployeeModelClass(int id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
